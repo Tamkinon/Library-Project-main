@@ -1,49 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Library Management System</title>
-    <link rel="stylesheet" href="static/css/styles.css" />
-    
-  </head>
-  <body>
-    <div class="container">
-      <div id="auth-section">
-        <h2>Authentication</h2>
-        <div id="login-form">
-          <input type="text" id="username" placeholder="Username" />
-          <input type="password" id="password" placeholder="Password" />
-          <button onclick="login()">Login</button>
-          <button onclick="register()">Register</button>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Store Management System</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="auth-section">
+        <div class="auth-container">
+            <h2><i class="fas fa-gamepad"></i> Game Store Login</h2>
+            <div class="login-form">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Username">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Password">
+                </div>
+                <button onclick="login()">Login</button>
+            </div>
         </div>
-      </div>
-
-      <div id="main-section" class="hidden">
-        <div class="header">
-          <h1>Library Management System</h1>
-          <button onclick="logout()">Logout</button>
-        </div>
-
-        <div class="books-section">
-          <h2>Add New Book</h2>
-          <div class="form-group">
-            <input type="text" id="book-title" placeholder="Title" />
-            <input type="text" id="book-author" placeholder="Author" />
-            <input type="text" id="book-year-published" placeholder="Year Published" />
-            <input type="text" id="book-type" placeholder="type" />
-            <button onclick="addBook()">Add Book</button>
-          </div>
-
-          <h2>All Books</h2>
-          <div id="books-list" class="books-grid"></div>
-
-          <h2>Loaned Books</h2>
-          <div id="loaned-books-list" class="books-grid"></div>
-        </div>
-      </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> 
+
+    <!-- Main Dashboard -->
+    <div id="main-section" class="hidden">
+        <!-- Navigation Header -->
+        <nav class="dashboard-nav">
+            <div class="nav-brand">
+                <i class="fas fa-gamepad"></i>
+                <h1>Game Store Management</h1>
+            </div>
+            <div class="nav-links">
+                <button onclick="showSection('games')" class="nav-button">
+                    <i class="fas fa-dice"></i> Games
+                </button>
+                <button onclick="showSection('users')" class="nav-button">
+                    <i class="fas fa-users"></i> Users
+                </button>
+                <button onclick="showSection('loans')" class="nav-button">
+                    <i class="fas fa-hand-holding"></i> Loans
+                </button>
+                <button onclick="logout()" class="nav-button logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="dashboard-content">
+            <!-- Games Section -->
+            <section id="games-section" class="content-section">
+                <div class="section-header">
+                    <h2>Game Management</h2>
+                    <button onclick="toggleForm('add-game-form')" class="action-button">
+                        <i class="fas fa-plus"></i> Add New Game
+                    </button>
+                </div>
+
+                <!-- Add Game Form -->
+                <div id="add-game-form" class="form-container hidden">
+                    <h3>Add New Game</h3>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="game-title">Title</label>
+                            <input type="text" id="game-title" placeholder="Game title">
+                        </div>
+                        <div class="input-group">
+                            <label for="game-genre">Genre</label>
+                            <input type="text" id="game-genre" placeholder="Game genre">
+                        </div>
+                        <div class="input-group">
+                            <label for="game-price">Price</label>
+                            <input type="number" id="game-price" placeholder="Price">
+                        </div>
+                        <div class="input-group">
+                            <label for="game-quantity">Quantity</label>
+                            <input type="number" id="game-quantity" placeholder="Quantity">
+                        </div>
+                    </div>
+                    <button onclick="addGame()" class="submit-button">Add Game</button>
+                </div>
+
+                <!-- Games List -->
+                <div id="games-list" class="cards-grid"></div>
+            </section>
+
+            <!-- Users Section -->
+            <section id="users-section" class="content-section hidden">
+                <div class="section-header">
+                    <h2>User Management</h2>
+                    <button onclick="toggleForm('add-user-form')" class="action-button">
+                        <i class="fas fa-user-plus"></i> Add New User
+                    </button>
+                </div>
+
+                <!-- Add User Form -->
+                <div id="add-user-form" class="form-container hidden">
+                    <h3>Add New User</h3>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="user-name">Name</label>
+                            <input type="text" id="user-name" placeholder="Full name">
+                        </div>
+                        <div class="input-group">
+                            <label for="user-email">Email</label>
+                            <input type="email" id="user-email" placeholder="Email address">
+                        </div>
+                        <div class="input-group">
+                            <label for="user-phone">Phone</label>
+                            <input type="tel" id="user-phone" placeholder="Phone number">
+                        </div>
+                    </div>
+                    <button onclick="addUser()" class="submit-button">Add User</button>
+                </div>
+
+                <!-- Users List -->
+                <div id="users-list" class="cards-grid"></div>
+            </section>
+
+            <!-- Loans Section -->
+            <section id="loans-section" class="content-section hidden">
+                <div class="section-header">
+                    <h2>Loan Management</h2>
+                    <button onclick="toggleForm('create-loan-form')" class="action-button">
+                        <i class="fas fa-plus"></i> Create New Loan
+                    </button>
+                </div>
+
+                <!-- Create Loan Form -->
+                <div id="create-loan-form" class="form-container hidden">
+                    <h3>Create New Loan</h3>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="loan-user">Select User</label>
+                            <select id="loan-user"></select>
+                        </div>
+                        <div class="input-group">
+                            <label for="loan-game">Select Game</label>
+                            <select id="loan-game"></select>
+                        </div>
+                    </div>
+                    <button onclick="createLoan()" class="submit-button">Create Loan</button>
+                </div>
+
+                <!-- Active Loans -->
+                <h3>Active Loans</h3>
+                <div id="loaned-games-list" class="cards-grid"></div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
