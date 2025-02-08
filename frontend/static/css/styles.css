@@ -53,14 +53,41 @@ body {
   gap: 1rem;
 }
 
+.login-form button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.login-form button:active {
+  background-color: #004085;
+  transform: scale(1);
+}
+
 /* Navigation Styles */
 .dashboard-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   background-color: var(--primary-color);
-  padding: 1rem 2rem;
+  color: white;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: var(--shadow);
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav-brand {
@@ -70,34 +97,39 @@ body {
   color: white;
 }
 
-.nav-links {
+.dashboard-nav .nav-links {
   display: flex;
   gap: 1rem;
 }
 
-.nav-button {
-  padding: 0.5rem 1rem;
+.dashboard-nav .nav-button {
+  background: none;
   border: none;
-  border-radius: var(--border-radius);
-  background-color: transparent;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.nav-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.dashboard-nav .nav-button:hover {
+  text-decoration: underline;
 }
 
-.logout {
-  background-color: var(--accent-color);
+.dashboard-nav .logout {
+  background-color: #e74c3c;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+}
+
+.dashboard-nav .logout:hover {
+  background-color: #c0392b;
 }
 
 /* Dashboard Content Styles */
 .dashboard-content {
-  padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  padding-top: 80px; /* Adjust this value based on the height of your navbar */
 }
 
 .content-section {
@@ -112,7 +144,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
 }
 
 /* Form Styles */
@@ -183,10 +214,29 @@ input, select {
   transform: translateY(-2px);
 }
 
-/* Utility Classes */
-/* .hidden {
+.return-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.return-button:hover {
+  background-color: #218838;
+}
+
+.return-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.hidden {
   display: none !important;
-} */
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {

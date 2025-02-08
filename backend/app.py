@@ -1,12 +1,11 @@
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from datetime import datetime, timedelta
-from models import db
-from models.user import User
-from models.admin import Admin
-from models.game import Game
-from models.loans import Loan
+from models import db, Loan, Game, User, Admin
 from werkzeug.security import generate_password_hash, check_password_hash
+import logging
+from datetime import datetime
+
 
 
 app = Flask(__name__)  # - create a flask instance
@@ -17,7 +16,8 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 # Specifies the database connection URL. In this case, it's creating a SQLite database
 # named 'library.db' in your project directory. The three slashes '///' indicate a
 # relative path from the current directory
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///games_store.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'TamirBenDavid1'  # Required for session management
 db.init_app(app)  # initializes the databsewith the flask application
 
@@ -68,7 +68,8 @@ def get_games():
         return jsonify({
             'error': 'Failed to retrieve games',
             'message': str(e)
-        }), 500                                    
+        }), 500
+
 
 @app.route('/login', methods=['POST'])
 def add_admin():
@@ -81,15 +82,17 @@ def add_admin():
     db.session.commit()  # commit the session to save in the database
     return jsonify({'message': 'Game added to database.'}), 201
 
+
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
     admin = Admin.query.filter_by(username=data['username']).first()
-    
+
     if admin and check_password_hash(admin.password, data['password']):
         session['admin_id'] = admin.id
         return jsonify({'message': 'Login successful'}), 200
     return jsonify({'message': 'Invalid credentials'}), 401
+
 
 @app.route('/logout', methods=['POST'])
 def logout():
@@ -97,11 +100,13 @@ def logout():
     return jsonify({'message': 'Logout successful'}), 200
 
 # User management routes
+
+
 @app.route('/users', methods=['POST'])
 def add_user():
     # if 'admin_id' not in session:
     #     return jsonify({'message': 'Unauthorized'}), 401
-        
+
     data = request.json
     new_user = User(
         name=data['name'],
@@ -111,6 +116,7 @@ def add_user():
     db.session.add(new_user)
     db.session.commit()
     return jsonify({'message': 'User added successfully', 'user_id': new_user.id}), 201
+
 
 @app.route('/users', methods=['GET'])
 def get_users():
@@ -139,51 +145,52 @@ def get_users():
         return jsonify({
             'error': 'Failed to retrieve users',
             'message': str(e)
-        }), 500                                    
+        }), 500
 
 # Loan management routes
+
+logging.basicConfig(level=logging.DEBUG)
+
+
 @app.route('/loans', methods=['POST'])
 def create_loan():
-    if 'admin_id' not in session:
-        return jsonify({'message': 'Unauthorized'}), 401
-        
     data = request.json
-    game = Game.query.get(data['game_id'])
-    
-    if not game or game.quantity < 1:
-        return jsonify({'message': 'Game not available'}), 400
-        
-    new_loan = Loan(
-        user_id=data['user_id'],
-        game_id=data['game_id'],
-        loan_date=datetime.utcnow()
-    )
-    
-    game.quantity -= 1
-    db.session.add(new_loan)
-    db.session.commit()
-    
-    return jsonify({'message': 'Loan created successfully', 'loan_id': new_loan.id}), 201
+    user_id = data['user_id']
+    game_id = data['game_id']
+
+    try:
+        game = Game.query.get(game_id)
+        if game is None:
+            return jsonify({'message': 'Game not found!'}), 404
+        if game.quantity > 0:
+            game.quantity -= 1
+            new_loan = Loan(user_id=user_id, game_id=game_id)
+            db.session.add(new_loan)
+            db.session.commit()
+            return jsonify({'message': 'Loan created successfully!'}), 201
+        else:
+            return jsonify({'message': 'Game out of stock!'}), 400
+    except Exception as e:
+        logging.error(f"Error creating loan: {e}")
+        return jsonify({'message': 'Failed to create loan'}), 500
+
 
 @app.route('/loans/<int:loan_id>/return', methods=['POST'])
 def return_loan(loan_id):
-    if 'admin_id' not in session:
-        return jsonify({'message': 'Unauthorized'}), 401
-        
-    loan = Loan.query.get_or_404(loan_id)
-    game = Game.query.get(loan.game_id)
-    
-    loan.return_date = datetime.utcnow()
-    game.quantity += 1
-    
-    db.session.commit()
-    return jsonify({'message': 'Game returned successfully'}), 200
+    loan = Loan.query.get(loan_id)
+    if loan and not loan.is_returned:
+        loan.return_date = datetime.utcnow()
+        loan.is_returned = True
+        game = Game.query.get(loan.game_id)
+        game.quantity += 1
+        db.session.commit()
+        return jsonify({'message': 'Game returned successfully!'}), 200
+    else:
+        return jsonify({'message': 'Loan not found or already returned!'}), 404
+
 
 @app.route('/loans', methods=['GET'])
 def get_loans():
-    if 'admin_id' not in session:
-        return jsonify({'message': 'Unauthorized'}), 401
-        
     loans = Loan.query.filter_by(return_date=None).all()
     loans_list = [{
         'id': loan.id,

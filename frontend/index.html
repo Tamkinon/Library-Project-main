@@ -35,13 +35,13 @@
                 <h1>Game Store Management</h1>
             </div>
             <div class="nav-links">
-                <button onclick="showSection('games')" class="nav-button">
+                <button onclick="scrollToSection('games-section')" class="nav-button">
                     <i class="fas fa-dice"></i> Games
                 </button>
-                <button onclick="showSection('users')" class="nav-button">
+                <button onclick="scrollToSection('users-section')" class="nav-button">
                     <i class="fas fa-users"></i> Users
                 </button>
-                <button onclick="showSection('loans')" class="nav-button">
+                <button onclick="scrollToSection('loans-section')" class="nav-button">
                     <i class="fas fa-hand-holding"></i> Loans
                 </button>
                 <button onclick="logout()" class="nav-button logout">
@@ -56,9 +56,6 @@
             <section id="games-section" class="content-section">
                 <div class="section-header">
                     <h2>Game Management</h2>
-                    <button onclick="toggleForm('add-game-form')" class="action-button">
-                        <i class="fas fa-plus"></i> Add New Game
-                    </button>
                 </div>
 
                 <!-- Add Game Form -->
@@ -82,7 +79,7 @@
                             <input type="number" id="game-quantity" placeholder="Quantity">
                         </div>
                     </div>
-                    <button onclick="addGame()" class="submit-button">Add Game</button>
+                    <button onclick="addGame(event)" class="submit-button">Add Game</button>
                 </div>
 
                 <!-- Games List -->
@@ -93,9 +90,6 @@
             <section id="users-section" class="content-section hidden">
                 <div class="section-header">
                     <h2>User Management</h2>
-                    <button onclick="toggleForm('add-user-form')" class="action-button">
-                        <i class="fas fa-user-plus"></i> Add New User
-                    </button>
                 </div>
 
                 <!-- Add User Form -->
@@ -115,7 +109,7 @@
                             <input type="tel" id="user-phone" placeholder="Phone number">
                         </div>
                     </div>
-                    <button onclick="addUser()" class="submit-button">Add User</button>
+                    <button onclick="addUser(event)" class="submit-button">Add User</button>
                 </div>
 
                 <!-- Users List -->
@@ -126,9 +120,6 @@
             <section id="loans-section" class="content-section hidden">
                 <div class="section-header">
                     <h2>Loan Management</h2>
-                    <button onclick="toggleForm('create-loan-form')" class="action-button">
-                        <i class="fas fa-plus"></i> Create New Loan
-                    </button>
                 </div>
 
                 <!-- Create Loan Form -->
@@ -144,7 +135,7 @@
                             <select id="loan-game"></select>
                         </div>
                     </div>
-                    <button onclick="createLoan()" class="submit-button">Create Loan</button>
+                    <button onclick="createLoan(event)" class="submit-button">Create Loan</button>
                 </div>
 
                 <!-- Active Loans -->
