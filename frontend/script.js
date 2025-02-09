@@ -11,34 +11,33 @@ async function initializeApp() {
 }
 
 
-// Authentication functions
-async function login() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+// // Authentication functions
+// async function login() {
+//     const username = document.getElementById('username').value;
+//     const password = document.getElementById('password').value;
 
-    if (username === 'admin' && password === 'admin123') {
-        document.getElementById('auth-section').classList.add('hidden');
-        document.getElementById('main-section').classList.remove('hidden');
-        document.getElementById('games-section').classList.remove('hidden');
-        document.getElementById('users-section').classList.remove('hidden');
-        document.getElementById('loans-section').classList.remove('hidden');
-        document.getElementById('add-game-form').classList.remove('hidden');
-        document.getElementById('add-user-form').classList.remove('hidden');
-        document.getElementById('create-loan-form').classList.remove('hidden');
-        getGames();
-        getUsers();
-        getLoans();
-    } else {
-        alert('Login failed');
-        console.error('Login error: Invalid credentials');
-    }
-}
+//     if (username === 'admin' && password === 'admin123') {
+//         document.getElementById('auth-section').classList.add('hidden');
+//         document.getElementById('main-section').classList.remove('hidden');
+//         document.getElementById('games-section').classList.remove('hidden');
+//         document.getElementById('users-section').classList.remove('hidden');
+//         document.getElementById('loans-section').classList.remove('hidden');
+//         document.getElementById('add-game-form').classList.remove('hidden');
+//         document.getElementById('add-user-form').classList.remove('hidden');
+//         document.getElementById('create-loan-form').classList.remove('hidden');
+//         getGames();
+//         getUsers();
+//         getLoans();
+//     } else {
+//         alert('Login failed');
+//         console.error('Login error: Invalid credentials');
+//     }
+// }
 
 async function logout() {
     try {
         await axios.post('http://127.0.0.1:5000/logout');
-        document.getElementById('auth-section').classList.remove('hidden');
-        document.getElementById('main-section').classList.add('hidden');
+        window.location.href = 'login.html';
     } catch (error) {
         console.error('Logout error:', error);
     }

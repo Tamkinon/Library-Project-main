@@ -8,26 +8,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Login Section -->
-    <div id="auth-section">
-        <div class="auth-container">
-            <h2><i class="fas fa-gamepad"></i> Game Store Login</h2>
-            <div class="login-form">
-                <div class="input-group">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="username" placeholder="Username">
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="password" placeholder="Password">
-                </div>
-                <button onclick="login()">Login</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Main Dashboard -->
-    <div id="main-section" class="hidden">
+    <div id="main-section">
         <!-- Navigation Header -->
         <nav class="dashboard-nav">
             <div class="nav-brand">
@@ -59,7 +41,7 @@
                 </div>
 
                 <!-- Add Game Form -->
-                <div id="add-game-form" class="form-container hidden">
+                <div id="add-game-form" class="form-container">
                     <h3>Add New Game</h3>
                     <div class="form-grid">
                         <div class="input-group">
@@ -87,13 +69,13 @@
             </section>
 
             <!-- Users Section -->
-            <section id="users-section" class="content-section hidden">
+            <section id="users-section" class="content-section">
                 <div class="section-header">
                     <h2>User Management</h2>
                 </div>
 
                 <!-- Add User Form -->
-                <div id="add-user-form" class="form-container hidden">
+                <div id="add-user-form" class="form-container">
                     <h3>Add New User</h3>
                     <div class="form-grid">
                         <div class="input-group">
@@ -117,13 +99,13 @@
             </section>
 
             <!-- Loans Section -->
-            <section id="loans-section" class="content-section hidden">
+            <section id="loans-section" class="content-section">
                 <div class="section-header">
                     <h2>Loan Management</h2>
                 </div>
 
                 <!-- Create Loan Form -->
-                <div id="create-loan-form" class="form-container hidden">
+                <div id="create-loan-form" class="form-container">
                     <h3>Create New Loan</h3>
                     <div class="form-grid">
                         <div class="input-group">
@@ -135,7 +117,7 @@
                             <select id="loan-game"></select>
                         </div>
                     </div>
-                    <button onclick="createLoan(event)" class="submit-button">Create Loan</button>
+                    <button onclick="createLoan()" class="submit-button">Create Loan</button>
                 </div>
 
                 <!-- Active Loans -->
@@ -144,7 +126,6 @@
             </section>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="script.js"></script>
 </body>
